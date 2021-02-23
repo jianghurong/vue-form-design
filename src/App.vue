@@ -11,6 +11,7 @@
             <draggable
               :list="item.list"
               class="component-draggable"
+              :group="{ name: 'componentsGroup', pull: 'clone', put: 'false' }"
             >
               <a-col :md="12" :sm="24" v-for="(component, componentIndex) in item.list" :key="componentIndex">
                 <div class="component-inner" @click="addComponent(component)">
@@ -24,7 +25,20 @@
       </div>
     </div>
     <div class="container-content">
-
+      <draggable
+        :list="drawingList"
+        :group="{ name: 'componentsGroup'}"
+      >
+        <div v-for="(item, index) in drawingList" :key="index">
+          <component :is="item.__config__.htmlTag">
+            123
+          </component>
+          {{ item }}
+        </div>
+      </draggable>
+      <div v-show="!drawingList.length" class="content-empty-info">
+         从左侧拖入或点选组件进行表单设计
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +55,7 @@ export default {
   data() {
     return {
       inputComponents,
+      drawingList: [],
       leftComponents: [
         { title: '输入型组件', list: inputComponents },
         { title: '选择型组件', list: selectComponents }
@@ -52,7 +67,7 @@ export default {
     addComponent(component) {
       // 深拷贝组件
       let clone = JSON.parse(JSON.stringify(component))
-      console.log(clone)
+      this.drawingList.push(clone)
     }
   }
 }
@@ -62,6 +77,7 @@ export default {
 #app {
   width: 100%;
   height: 100vh;
+  display: flex;
   .container-left {
     width: 300px;
     height: 100%;

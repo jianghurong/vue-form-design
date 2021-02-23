@@ -5,12 +5,16 @@ import App from './App.vue'
 import {
   Row,
   Col,
-  Icon
+  Icon,
+  Form,
+  Input
 } from 'ant-design-vue'
 
 Vue.use(Row)
   .use(Col)
   .use(Icon)
+  .use(Form)
+  .use(Input)
 
 
 Vue.config.productionTip = false

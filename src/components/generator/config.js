@@ -12,6 +12,7 @@ export const inputComponents = [
         __config__: {
             label: '单行文本',
             labelWidth: null,
+            htmlTag: 'a-input',
             icon: 'edit'
         }
     },
