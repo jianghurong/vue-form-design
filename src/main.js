@@ -7,7 +7,12 @@ import {
   Col,
   Icon,
   Form,
-  Input
+  Input,
+  InputNumber,
+  Tabs,
+  Switch,
+  Radio,
+  Rate
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -15,6 +20,11 @@ Vue.use(Row)
   .use(Icon)
   .use(Form)
   .use(Input)
+  .use(InputNumber)
+  .use(Tabs)
+  .use(Switch)
+  .use(Radio)
+  .use(Rate)
 
 
 Vue.config.productionTip = false
