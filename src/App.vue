@@ -85,11 +85,11 @@ export default {
     },
     data() {
         return {
-            ok: `<button>123</button>`,
             inputComponents,
             formConfig,
             drawingList: [],
             activeComponent: {},
+            baseField: 1000,
             leftComponents: [
                 { title: '输入型组件', list: inputComponents },
                 { title: '选择型组件', list: selectComponents },
@@ -101,8 +101,15 @@ export default {
         addComponent(component) {
             // 深拷贝组件
             let clone = JSON.parse(JSON.stringify(component))
+            clone = this.createField(clone)
             this.drawingList.push(clone)
             this.activeComponent = clone
+        },
+        // 生成字段ID
+        createField(clone) {
+            ++this.baseField
+            clone.__vModel__ = `fieId${this.baseField}`
+            return clone
         },
         // 生成组件属性
         getComponentAttribute(item) {
@@ -112,7 +119,7 @@ export default {
         // 生成a-radio-group子级
         buildRadioGroupChildren() {
             return `<a-radio >123</a-radio><a-radio >245</a-radio>`
-        }
+        },
     },
 };
 </script>

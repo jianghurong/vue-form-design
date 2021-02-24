@@ -12,7 +12,8 @@ import {
   Tabs,
   Switch,
   Radio,
-  Rate
+  Rate,
+  DatePicker
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -25,6 +26,7 @@ Vue.use(Row)
   .use(Switch)
   .use(Radio)
   .use(Rate)
+  .use(DatePicker)
 
 
 Vue.config.productionTip = false
