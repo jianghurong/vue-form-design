@@ -17,6 +17,7 @@ export const inputComponents = [
             icon: 'edit'
         },
         // 组件的标签属性
+        value: '',
         disabled: false,
         style: { width: '100%' },
         placeholder: '请输入单行文本',
@@ -107,6 +108,15 @@ export const selectComponents = [
         count: 5,
         defaultValue: 5,
         allowHalf: false
+    },
+    {
+        __config__: {
+            label: '日期选择器',
+            labelWidth: null,
+            htmlTag: 'a-date-picker',
+            icon: 'date'
+        },
+        disabled: false,
     }
 ]
 
