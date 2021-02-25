@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-23 10:32:53
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-02-24 18:06:52
+ * @LastEditTime: 2021-02-25 15:48:56
  * @Email: 19875991227@163.com
  * @Description: 表单设计器配置
  */
@@ -56,33 +56,47 @@ export const inputComponents = [
 ]
 
 export const selectComponents = [
-    {
-        __config__: {
-            label: '下拉选择',
-            labelWidth: null,
-            icon: 'select'
-        }
-    },
+    // {
+    //     __config__: {
+    //         label: '下拉选择',
+    //         labelWidth: null,
+    //         htmlTag: 'a-select',
+    //         icon: 'select',
+    //     },
+    //     __slot__: {
+    //         optionList: [
+    //             { label: '选项一', value: '1' },
+    //             { label: '选项二', value: '2' },
+    //         ]
+    //     },
+    //     defaultValue: '1',
+    // },
     {
         __config__: {
             label: '单选框',
             labelWidth: null,
             htmlTag: 'a-radio-group',
-            icon: 'select'
+            icon: 'select',
+            type: '',
         },
         __slot__: {
             optionList: [
                 { label: '选项一', value: 1 },
+                { label: '选项二', value: 2 },
             ]
         },
-        disabled: false
+        defaultValue: 1,
+        disabled: false,
+        buttonStyle: 'solid'
     },
     {
         __config__: {
             label: '多选框',
             labelWidth: null,
+            htmlTag: 'a-checkbox-group',
             icon: 'select'
-        }
+        },
+        options: ['选项一', '选项二', '选项三', '选项四']
     },
     {
         __config__: {
@@ -117,6 +131,21 @@ export const selectComponents = [
             icon: 'date'
         },
         disabled: false,
+    }
+]
+
+export const promptComponents = [
+    {
+        __config__: {
+            label: '提示',
+            labelWidth: null,
+            htmlTag: 'a-alert',
+            icon: 'alert'
+        },
+        closable: false,
+        message: '提示信息',
+        description: '',
+        type: 'info'
     }
 ]
 
