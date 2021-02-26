@@ -40,18 +40,16 @@
         <div class="container-content">    
             <a-form v-bind="formConfig">
                 <draggable :list="drawingList" :group="{ name: 'componentsGroup' }">
-                    <div v-for="(item, index) in drawingList" :key="index" class="compoment-item">
-                        <a-form-item :label="item.__config__.label">
-                            <component
+                    <div v-for="(item, index) in drawingList" :key="index" class="compoment-item" @click="onActiveComponentChange(item)">
+                        <a-form-item :label="item.__config__.showLabel ? item.__config__.label : ''">
+                            <render :render-slot="item" @input="onInput" />
+                            <!-- 已废弃 原生组件 component 写法
+                                <component
                                 :is="item.__config__.htmlTag"
                                 v-bind="getComponentAttribute(item)"
-                            >   
+                            >
                                 <render v-if="item.__slot__"  :render-slot="item"></render>
-                                <!-- 因为 render 渲染 select 组件的未知bug，在这里进行内置渲染 -->
-                                <!-- <a-select-option v-for="(option, optionIndex) in item.__slot__.optionList" :key="optionIndex" :value="option.value">
-                                    {{ option.label }}
-                                </a-select-option> -->
-                            </component>
+                            </component> -->
                         </a-form-item>
                     </div>
                 </draggable>
@@ -60,7 +58,7 @@
                 从左侧拖入或点选组件进行表单设计
             </div>
         </div>
-        <!-- @todo 独立右侧模块 -->
+        <!-- TODO: 独立右侧模块 -->
         <div class="container-right">
             <right-menu
                 :activeComponent="activeComponent"
@@ -80,7 +78,7 @@ import {
     promptComponents,
     formConfig
 } from '@/components/generator/config.js'
-import render from '@/components/render/render.js'
+import render from '@/utils/render.js'
 
 export default {
     name: 'App',
@@ -121,12 +119,20 @@ export default {
         },
         // 生成组件属性
         getComponentAttribute(item) {
-            // @todo 删除__config__优化
+            // TODO: 删除__config__优化
             let clone = JSON.parse(JSON.stringify(item))
             if (clone.__config__) delete clone.__config__
             if (clone.__slot__) delete clone.__slot__
             return clone
         },
+        // 监听组件点击事件
+        onActiveComponentChange(item) {
+            this.activeComponent = item
+        },
+        // 监听表单项值的变化
+        onInput(val) {
+            this.activeComponent.defaultValue = val
+        }
     },
 };
 </script>

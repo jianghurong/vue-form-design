@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-25 16:31:59
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-02-25 17:15:06
+ * @LastEditTime: 2021-02-26 17:35:37
  * @Email: 19875991227@163.com
  * @Description: 执行表单动作
 -->
@@ -17,18 +17,15 @@
 </template>
 
 <script>
-const tags = {
-    'a-input': e => {
-        console.log(e)
-    }
-}
+import { tags, templateBuilder, formBuilder } from '@/components/generator/html'
 
 export default {
     name: 'ActionMenu',
     data() {
         return {
             formData: {},
-            tags
+            tags,
+            templateBuilder 
         }
     },
     props: {
@@ -42,7 +39,14 @@ export default {
     methods: {
         exportVuePage() {
             this.setFormData()
-            this.setHtmlCode()
+            let data = this.setHtmlCode()
+            return data
+            // let urlObject = window.URL || window.webkitURL || window
+            // let exportBlob = new Blob([data])
+            // let link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a')
+            // link.href = urlObject.createObjectURL(exportBlob)
+            // link.download = new Date().getTime() + '.vue'
+            // link.click()
         },
         // 组装表单数据
         setFormData() {
@@ -53,13 +57,14 @@ export default {
         },
         //
         setHtmlCode() {
-            return
-            // const htmlStr = ''
-            // this.formData.componentList.forEach(element => {
-            //     htmlStr = ``
-            // })
-            // console.log(this.formData)
-        }
+            let htmlStr = ''
+            this.formData.componentList.forEach(item => {
+                htmlStr = htmlStr + `${tags[item.__config__.htmlTag](item)}\n`
+            })
+            htmlStr = templateBuilder(formBuilder(this.formConfig, htmlStr))
+            console.log(htmlStr)
+            return htmlStr
+        },
     }
 }
 </script>

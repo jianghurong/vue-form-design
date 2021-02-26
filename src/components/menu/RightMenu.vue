@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-24 14:14:24
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-02-25 14:47:30
+ * @LastEditTime: 2021-02-26 17:14:45
  * @Email: 19875991227@163.com
  * @Description: 右侧面板（组件属性与表单属性）
 -->
@@ -30,6 +30,23 @@
                     ></a-input>
                 </a-form-item>
                 <a-form-item
+                    v-if="activeComponent.__config__ && activeComponent.__config__.label !== undefined"
+                    label="标签名称"
+                >
+                    <a-input
+                        v-model="activeComponent.__config__.label"
+                    ></a-input>
+                </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.placeholder !== undefined"
+                    label="提示内容"
+                >
+                    <a-input
+                        v-model="activeComponent.placeholder"
+                        placeholder="请输入提示内容"
+                    ></a-input>
+                </a-form-item>
+                <a-form-item
                     v-if="
                         activeComponent.style &&
                         activeComponent.style.width !== undefined
@@ -42,11 +59,11 @@
                     ></a-input>
                 </a-form-item>
                 <a-form-item
-                    v-if="activeComponent.__vModel__ !== undefined"
+                    v-if="activeComponent.defaultValue !== undefined"
                     label="默认值"
                 >
                     <a-input
-                        v-model="activeComponent.value"
+                        v-model="activeComponent.defaultValue"
                     ></a-input>
                 </a-form-item>
 				<a-form-item
@@ -54,6 +71,12 @@
 					label="提示内容"
 				>
 					<a-input v-model="activeComponent.message"></a-input>
+				</a-form-item>
+                <a-form-item
+					v-if="activeComponent.maxLength !== undefined"
+					label="最大长度"
+				>
+					<a-input-number v-model="activeComponent.maxLength"></a-input-number>
 				</a-form-item>
 				<a-form-item
 					v-if="activeComponent.description !== undefined"
@@ -80,6 +103,15 @@
 						<a-radio-button value="solid">填色</a-radio-button>
 					</a-radio-group>
 				</a-form-item>
+                <a-form-item
+                    v-if="activeComponent.vertical !== undefined"
+                    label="方向"
+                >
+                    <a-radio-group v-model="activeComponent.vertical" button-style="solid">
+                        <a-radio-button :value="false">水平</a-radio-button>
+                        <a-radio-button :value="true">垂直</a-radio-button>
+                    </a-radio-group>
+                </a-form-item>
 				<!-- 选项模块 -->
 				<template v-if="activeComponent.__slot__ && activeComponent.__slot__.optionList !== undefined">
 					<a-row :gutter="[0, 24]">
@@ -104,9 +136,10 @@
 						</a-col>
 					</a-row>
 				</template>
+                <!-- TODO 标记刻度 -->
 				<!-- select 模块 -->
 				<a-form-item
-					v-if="activeComponent.type!== undefined"
+					v-if="activeComponent.type !== undefined"
 					label="提示类型"
 				>
 					<a-select v-model="activeComponent.type">
@@ -125,7 +158,6 @@
 					</a-select>
 				</a-form-item>
 
-				<!-- switch 模块 -->
                 <a-form-item
                     v-if="activeComponent.checkedChildren !== undefined"
                     label="开启提示"
@@ -171,6 +203,34 @@
                     ></a-input-number>
                 </a-form-item>
                 <a-form-item
+                    v-if="activeComponent.max !== undefined"
+                    label="最大值"
+                >
+                    <a-input-number
+                        v-model="activeComponent.max"
+                    ></a-input-number>
+                </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.min !== undefined"
+                    label="最小值"
+                >
+                    <a-input-number
+                        v-model="activeComponent.min"
+                    ></a-input-number>
+                </a-form-item>
+
+
+                <!-- switch 模块 -->
+                <a-form-item
+                    v-if="activeComponent.__config__ && activeComponent.__config__.showLabel !== undefined"
+                    label="标签显示"
+                >
+                    <a-switch
+                        v-model="activeComponent.__config__.showLabel"
+                        placeholder="请输入开启提示"
+                    ></a-switch>
+                </a-form-item>
+                <a-form-item
                     v-if="activeComponent.allowClear !== undefined"
                     label="允许清空"
                 >
@@ -193,6 +253,24 @@
                     label="是否禁用"
                 >
                     <a-switch v-model="activeComponent.disabled"></a-switch>
+                </a-form-item>
+                 <a-form-item
+                    v-if="activeComponent.showArrow !== undefined"
+                    label="箭头显示"
+                >
+                    <a-switch v-model="activeComponent.showArrow"></a-switch>
+                </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.tooltipVisible !== undefined"
+                    label="刻度显示"
+                >
+                    <a-switch v-model="activeComponent.tooltipVisible"></a-switch>
+                </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.reverse !== undefined"
+                    label="反向坐标轴"
+                >
+                    <a-switch v-model="activeComponent.reverse"></a-switch>
                 </a-form-item>
             </a-form>
         </div>

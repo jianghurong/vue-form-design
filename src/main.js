@@ -17,7 +17,8 @@ import {
   Alert,
   Select,
   Button,
-  Checkbox
+  Checkbox,
+  Slider
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -35,6 +36,7 @@ Vue.use(Row)
   .use(Select)
   .use(Button)
   .use(Checkbox)
+  .use(Slider)
 
 Vue.config.productionTip = false
 
