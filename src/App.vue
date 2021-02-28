@@ -1,75 +1,78 @@
 <template>
-    <div id="app">
-        <div class="container-left">
-            <div class="component-list">
-                <div v-for="(item, index) in leftComponents" :key="index">
-                    <div class="component-title">
-                        <a-icon type="apartment" />
-                        {{ item.title }}
-                    </div>
-                    <a-row :gutter="[12, 12]" style="margin-bottom: 12px">
-                        <draggable
-                            :list="item.list"
-                            class="component-draggable"
-                            :group="{
-                                name: 'componentsGroup',
-                                pull: 'clone',
-                                put: 'false',
-                            }"
-                        >
-                            <a-col
-                                :md="12"
-                                :sm="24"
-                                v-for="(component, componentIndex) in item.list"
-                                :key="componentIndex"
+    <a-config-provider :locale="zhCN">
+        <div id="app">
+            <div class="container-left">
+                <div class="component-list">
+                    <div v-for="(item, index) in leftComponents" :key="index">
+                        <div class="component-title">
+                            <a-icon type="apartment" />
+                            {{ item.title }}
+                        </div>
+                        <a-row :gutter="[12, 12]" style="margin-bottom: 12px">
+                            <draggable
+                                :list="item.list"
+                                class="component-draggable"
+                                :group="{
+                                    name: 'componentsGroup',
+                                    pull: 'clone',
+                                    put: 'false',
+                                }"
                             >
-                                <div
-                                    class="component-inner"
-                                    @click="addComponent(component)"
+                                <a-col
+                                    :md="12"
+                                    :sm="24"
+                                    v-for="(component, componentIndex) in item.list"
+                                    :key="componentIndex"
                                 >
-                                    <a-icon :type="component.__config__.icon" />
-                                    {{ component.__config__.label }}
-                                </div>
-                            </a-col>
-                        </draggable>
-                    </a-row>
-                </div>
-                <action-menu :formConfig="formConfig" :drawingList="drawingList"></action-menu>
-            </div>
-        </div>
-        <div class="container-content">    
-            <a-form v-bind="formConfig">
-                <draggable :list="drawingList" :group="{ name: 'componentsGroup' }">
-                    <div v-for="(item, index) in drawingList" :key="index" class="compoment-item" @click="onActiveComponentChange(item)">
-                        <a-form-item :label="item.__config__.showLabel ? item.__config__.label : ''">
-                            <render :render-slot="item" @input="onInput" />
-                            <!-- 已废弃 原生组件 component 写法
-                                <component
-                                :is="item.__config__.htmlTag"
-                                v-bind="getComponentAttribute(item)"
-                            >
-                                <render v-if="item.__slot__"  :render-slot="item"></render>
-                            </component> -->
-                        </a-form-item>
+                                    <div
+                                        class="component-inner"
+                                        @click="addComponent(component)"
+                                    >
+                                        <a-icon :type="component.__config__.icon" />
+                                        {{ component.__config__.label }}
+                                    </div>
+                                </a-col>
+                            </draggable>
+                        </a-row>
                     </div>
-                </draggable>
-            </a-form>
-            <div v-show="!drawingList.length" class="content-empty-info">
-                从左侧拖入或点选组件进行表单设计
+                    <action-menu :formConfig="formConfig" :drawingList="drawingList"></action-menu>
+                </div>
+            </div>
+            <div class="container-content">    
+                <a-form v-bind="formConfig">
+                    <draggable :list="drawingList" :group="{ name: 'componentsGroup' }">
+                        <div v-for="(item, index) in drawingList" :key="index" class="compoment-item" @click="onActiveComponentChange(item)">
+                            <a-form-item :label="item.__config__.showLabel ? item.__config__.label : ''">
+                                <render :render-slot="item" @input="onInput" />
+                                <!-- 已废弃 原生组件 component 写法
+                                    <component
+                                    :is="item.__config__.htmlTag"
+                                    v-bind="getComponentAttribute(item)"
+                                >
+                                    <render v-if="item.__slot__"  :render-slot="item"></render>
+                                </component> -->
+                            </a-form-item>
+                        </div>
+                    </draggable>
+                </a-form>
+                <div v-show="!drawingList.length" class="content-empty-info">
+                    从左侧拖入或点选组件进行表单设计
+                </div>
+            </div>
+            <!-- TODO: 独立右侧模块 -->
+            <div class="container-right">
+                <right-menu
+                    :activeComponent="activeComponent"
+                    :formConfig="formConfig"
+                >
+                </right-menu>
             </div>
         </div>
-        <!-- TODO: 独立右侧模块 -->
-        <div class="container-right">
-            <right-menu
-                :activeComponent="activeComponent"
-                :formConfig="formConfig"
-            >
-            </right-menu>
-        </div>
-    </div>
+    </a-config-provider>
 </template>
 
 <script>
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import draggable from 'vuedraggable'
 import { RightMenu, ActionMenu } from '@/components/menu'
 import {
@@ -90,6 +93,7 @@ export default {
     },
     data() {
         return {
+            zhCN,
             formConfig,
             drawingList: [],
             activeComponent: {},
@@ -98,7 +102,7 @@ export default {
                 { title: '输入型组件', list: inputComponents },
                 { title: '选择型组件', list: selectComponents },
                 { title: '提示型组件', list: promptComponents }
-            ],
+            ]
         };
     },
     methods: {

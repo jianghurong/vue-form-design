@@ -16,6 +16,10 @@ export const inputComponents = [
             htmlTag: 'a-input',
             icon: 'edit',
         },
+        __slot__: {
+            prefix: '',
+            suffix: ''
+        },
         // 组件的标签属性
         defaultValue: '', // 默认值
         disabled: false, // 是否禁用
@@ -106,7 +110,9 @@ export const selectComponents = [
             htmlTag: 'a-checkbox-group',
             icon: 'select'
         },
-        options: ['选项一', '选项二', '选项三', '选项四']
+        options: ['选项一', '选项二', '选项三'],
+        defaultValue: '选项一',
+        disabled: false,
     },
     {
         __config__: {
@@ -141,6 +147,24 @@ export const selectComponents = [
             icon: 'calendar'
         },
         disabled: false,
+        placeholder: '',
+        allowClear: true,
+        inputReadOnly: false,
+        showToday: true,
+        defaultValue: ''
+    },
+    {
+        __config__: {
+            label: '时间选择器',
+            showLabel: true,
+            htmlTag: 'a-time-picker',
+            icon: 'calendar'
+        },
+        disabled: false,
+        allowClear: true,
+        defaultValue: '',
+        hourStep: 1, // 小时间隔
+        inputReadOnly: false, // 设置输入框为只读，避免在移动设备上打开虚拟键盘
     },
     {
         __config__: {

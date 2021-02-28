@@ -195,6 +195,34 @@
                     ></a-input>
                 </a-form-item>
                 <a-form-item
+                    v-if="activeComponent.__slot__ && activeComponent.__slot__.prefix !== undefined"
+                    label="前缀图标"
+                >
+                    <a-input-search
+                        v-model="activeComponent.__slot__.prefix"
+                        placeholder="请输入前缀图标"
+                        @search="activeIconMenu('prefix')"
+                    >
+                        <a-button type="primary" slot="enterButton">
+                            <a-icon type="search"></a-icon>
+                        </a-button>
+                    </a-input-search>
+                </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.__slot__ && activeComponent.__slot__.suffix !== undefined"
+                    label="后缀图标"
+                >
+                    <a-input-search
+                        v-model="activeComponent.__slot__.suffix"
+                        placeholder="请输入后缀图标"
+                        @search="activeIconMenu('suffix')"
+                    >
+                        <a-button type="primary" slot="enterButton">
+                            <a-icon type="search"></a-icon>
+                        </a-button>
+                    </a-input-search>
+                </a-form-item>
+                <a-form-item
                     v-if="activeComponent.count !== undefined"
                     label="最大值"
                 >
@@ -218,6 +246,14 @@
                         v-model="activeComponent.min"
                     ></a-input-number>
                 </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.hourStep !== undefined"
+                    label="小时选项间隔"
+                >   
+                    <a-input-number
+                        v-model="activeComponent.hourStep"
+                    ></a-input-number>
+                </a-form-item>
 
 
                 <!-- switch 模块 -->
@@ -235,6 +271,12 @@
                     label="允许清空"
                 >
                     <a-switch v-model="activeComponent.allowClear"></a-switch>
+                </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.showToday !== undefined"
+                    label="显示今天"
+                >
+                    <a-switch v-model="activeComponent.showToday"></a-switch>
                 </a-form-item>
                 <a-form-item
                     v-if="activeComponent.closable !== undefined"
@@ -272,6 +314,12 @@
                 >
                     <a-switch v-model="activeComponent.reverse"></a-switch>
                 </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.inputReadOnly !== undefined"
+                    label="禁用输入框"
+                >
+                    <a-switch v-model="activeComponent.inputReadOnly"></a-switch>
+                </a-form-item>
             </a-form>
         </div>
         <div v-show="currentTab === 'form-properties'">
@@ -308,12 +356,18 @@
                 </a-form-item>
             </a-form>
         </div>
+        <icon-menu :visable="iconVisiable" @select="iconSelect" />
     </div>
 </template>
 
 <script>
+import IconMenu from './IconMenu'
+
 export default {
-    name: "RightMenu",
+    name: 'RightMenu',
+    components: {
+        IconMenu
+    },
     props: {
         activeComponent: {
             required: true,
@@ -327,15 +381,27 @@ export default {
     data() {
         return {
             currentTab: "component-properties",
+            currentIconType: '',
+            iconVisiable: false,
         };
     },
     methods: {
+        // 添加组件
 		addComponentOption() {
 			this.activeComponent.__slot__.optionList.push({
 				label: '',
 				value: ''
 			})
-		}
+        },
+        // 激活图标菜单
+        activeIconMenu(type) {
+            this.iconVisiable = true
+            this.currentIconType = type
+        },
+        iconSelect(icon) {
+            this.iconVisiable = false
+            this.activeComponent.__slot__[this.currentIconType] = icon
+        }
     },
 };
 </script>

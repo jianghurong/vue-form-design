@@ -14,11 +14,14 @@ import {
   Radio,
   Rate,
   DatePicker,
+  TimePicker,
   Alert,
   Select,
   Button,
   Checkbox,
-  Slider
+  Slider,
+  ConfigProvider,
+  Drawer
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -32,11 +35,14 @@ Vue.use(Row)
   .use(Radio)
   .use(Rate)
   .use(DatePicker)
+  .use(TimePicker)
   .use(Alert)
   .use(Select)
   .use(Button)
   .use(Checkbox)
   .use(Slider)
+  .use(ConfigProvider)
+  .use(Drawer)
 
 Vue.config.productionTip = false
 

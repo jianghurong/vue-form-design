@@ -74,6 +74,15 @@ function nodeChildrenBuilder(h, nodeClone, children) {
 
 // 子组件解析
 const compoentChild = {
+    'a-input': (h, nodeClone) => {
+        const nodeList = []
+        Object.keys(nodeClone.__slot__).forEach(key => {
+            if (nodeClone.__slot__[key] !== '') {
+                nodeList.push(<a-icon slot={key} type={nodeClone.__slot__[key]}></a-icon>)
+            }
+        })
+        return nodeList
+    },
     'a-radio-group': (h, nodeClone) => {
         const nodeList = []
         nodeClone.__slot__.optionList.forEach(option => {

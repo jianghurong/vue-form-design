@@ -36,6 +36,12 @@ function attributesBuilder(el) {
         allowHalf: el.allowHalf ? `allowHalf="${el.allowHalf}"` : ''
     }
 }
+// 下拉框子元素解析
+function selectChildrenBuilder(el) {
+    const children = []
+    children.push(`<a-select-option v-for="(item, index) in ${el.__vModel__}.optionList :key="index" :label="item.label" :value="item.value" :disabled="item.disabled"></a-select-option>`) 
+    return children
+}
 // 子组件解析函数
 function childrenBuilder(tag, list) {
     let htmlList = []
@@ -60,6 +66,10 @@ const tags = {
     'a-radio-group': el => {
         const { tag } = attributesBuilder(el)
         return `<${tag}>\n${childrenBuilder(tag, el.__slot__.optionList)}</${tag}>`
+    },
+    'a-select': el => {
+        const { tag } = attributesBuilder(el)
+        return `<${tag}>\n${selectChildrenBuilder(el)}\n</${tag}>`
     },
     'a-rate': el => {
         const { tag, count, defaultValue, allowHalf } = attributesBuilder(el)

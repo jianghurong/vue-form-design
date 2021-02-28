@@ -8,8 +8,10 @@
  */
 import RightMenu from './RightMenu'
 import ActionMenu from './ActionMenu'
+import IconMenu from './IconMenu'
 
 export {
     RightMenu,
-    ActionMenu
+    ActionMenu,
+    IconMenu
 }
