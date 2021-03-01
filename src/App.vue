@@ -135,6 +135,9 @@ export default {
         },
         // 监听表单项值的变化
         onInput(val) {
+            if (val.currentTarget !== undefined) {
+                val = val.currentTarget.value
+            }
             this.activeComponent.defaultValue = val
         }
     },

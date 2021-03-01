@@ -51,10 +51,9 @@ function nodeDataObjectBuilder(dataObject, config) {
 function nodeBindVModel(dataObject, val) {
     dataObject.props.value = val
     // 注意这里只能实现组件属性的单向绑定，我们需要实现双向绑定给组件添加 input 事件
-
     dataObject.on.input = e => {
-        console.log(e.currentTarget.value)
-        this.$emit('input', e.currentTarget.value)
+        // 注意组件的 input 事件回调类型可能是几种
+        this.$emit('input', e)
     }
 }
 
@@ -91,6 +90,13 @@ const compoentChild = {
             } else {
                 nodeList.push(<a-radio value={option.value} disabled={option.disabled}>{option.label}</a-radio>)
             }
+        })
+        return nodeList
+    },
+    'a-checkbox-group': (h, nodeClone) => {
+        const nodeList = []
+        nodeClone.__slot__.optionList.forEach(option => {
+            nodeList.push(<a-checkbox value={option.value} disabled={option.disabled}>{option.label}</a-checkbox>)
         })
         return nodeList
     },

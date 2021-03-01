@@ -25,7 +25,8 @@ export default {
         return {
             formData: {},
             tags,
-            templateBuilder 
+            templateBuilder,
+            htmlStr: ''
         }
     },
     props: {
@@ -37,6 +38,7 @@ export default {
         }
     },
     methods: {
+        // 导出 vue 界面
         exportVuePage() {
             this.setFormData()
             let data = this.setHtmlCode()

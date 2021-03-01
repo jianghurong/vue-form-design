@@ -94,12 +94,12 @@ export const selectComponents = [
         },
         __slot__: {
             optionList: [
-                { label: '选项一', value: 1 },
-                { label: '选项二', value: 2 },
-                { label: '选项三', value: 3 },
+                { label: '选项一', value: '1' },
+                { label: '选项二', value: '2' },
+                { label: '选项三', value: '3' },
             ]
         },
-        defaultValue: 1,
+        defaultValue: '1',
         disabled: false,
         buttonStyle: 'solid'
     },
@@ -110,8 +110,14 @@ export const selectComponents = [
             htmlTag: 'a-checkbox-group',
             icon: 'select'
         },
-        options: ['选项一', '选项二', '选项三'],
-        defaultValue: '选项一',
+        __slot__: {
+            optionList: [
+                { label: '选项一', value: '1' },
+                { label: '选项二', value: '2' },
+                { label: '选项三', value: '3' },
+            ]
+        },
+        defaultValue: [],
         disabled: false,
     },
     {
@@ -161,6 +167,7 @@ export const selectComponents = [
             icon: 'calendar'
         },
         disabled: false,
+        placeholder: '',
         allowClear: true,
         defaultValue: '',
         hourStep: 1, // 小时间隔
@@ -176,11 +183,10 @@ export const selectComponents = [
         defaultValue: 60,
         max: 100,
         min: 0,
-        disabled: false,
         vertical: false, // 组件方向 false - 水平 true - 垂直
         reverse: false, // 反向坐标轴
-        marks: {}, // 标记刻度
         tooltipVisible: false, // 显示提示
+        disabled: false,
     }
 ]
 
