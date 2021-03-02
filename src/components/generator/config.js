@@ -213,5 +213,6 @@ export const formConfig = {
     wrapperCol: { span: 8 },
     labelAlign: 'left',
     ref: '',
-    size: 'large'
+    hideRequiredMark: false,
+    layout: 'horizontal'
 }

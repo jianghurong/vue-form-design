@@ -41,7 +41,7 @@
             <div class="container-content">    
                 <a-form v-bind="formConfig">
                     <draggable :list="drawingList" :group="{ name: 'componentsGroup' }">
-                        <div v-for="(item, index) in drawingList" :key="index" class="compoment-item" @click="onActiveComponentChange(item)">
+                        <div v-for="(item, index) in drawingList" :key="index" class="component-item" @click="onActiveComponentChange(item)">
                             <a-form-item :label="item.__config__.showLabel ? item.__config__.label : ''">
                                 <render :render-slot="item" @input="onInput" />
                                 <!-- 已废弃 原生组件 component 写法
@@ -136,6 +136,9 @@ export default {
             if (val.currentTarget !== undefined) {
                 val = val.currentTarget.value
             }
+            if (val.target !== undefined) {
+                val = val.target.value
+            }
             if (this.activeComponent.defaultValue !== undefined) {
                 this.activeComponent.defaultValue = val
             } else if (this.activeComponent.defaultChecked !== undefined) {
@@ -192,8 +195,9 @@ export default {
                 }
             }
         }
-        .compoment-item {
-            padding: 8px;
+        .component-item {
+            padding: 24px 24px 0 24px;
+            margin-top: 12px;
             border: 1px solid transparent;
             &:hover {
                 background: rgba(24, 144, 255, 0.1);

@@ -21,7 +21,7 @@
             </a-tab-pane>
         </a-tabs>
         <div v-show="currentTab === 'component-properties'">
-            <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
+            <a-form :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }">
                 <!-- input 模块 -->
 				<a-form-item v-if="activeComponent.__vModel__" label="字段名">
                     <a-input
@@ -331,7 +331,7 @@
             </a-form>
         </div>
         <div v-show="currentTab === 'form-properties'">
-            <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
+            <a-form :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }">
                 <a-form-item
                     v-if="formConfig.labelCol !== undefined"
                     label="标签栅格"
@@ -351,6 +351,19 @@
                     ></a-input>
                 </a-form-item>
                 <a-form-item
+                    v-if="formConfig.layout !== undefined"
+                    label="表单布局"
+                >
+                    <a-radio-group
+                        v-model="formConfig.layout"
+                        button-style="solid"
+                    >
+                        <a-radio-button value="horizontal">水平</a-radio-button>
+                        <a-radio-button value="vertical">垂直</a-radio-button>
+                        <a-radio-button value="inline">行内</a-radio-button>
+                    </a-radio-group>
+                </a-form-item>
+                <a-form-item
                     v-if="formConfig.labelAlign !== undefined"
                     label="标签对齐"
                 >
@@ -361,6 +374,12 @@
                         <a-radio-button value="left">左对齐</a-radio-button>
                         <a-radio-button value="right">右对齐</a-radio-button>
                     </a-radio-group>
+                </a-form-item>
+                <a-form-item
+                    v-if="formConfig.hideRequiredMark !== undefined"
+                    label="必选标记"
+                >
+                    <a-switch v-model="formConfig.hideRequiredMark"></a-switch>
                 </a-form-item>
             </a-form>
         </div>
