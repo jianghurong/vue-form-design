@@ -59,7 +59,6 @@
                     从左侧拖入或点选组件进行表单设计
                 </div>
             </div>
-            <!-- TODO: 独立右侧模块 -->
             <div class="container-right">
                 <right-menu
                     :activeComponent="activeComponent"
@@ -123,7 +122,6 @@ export default {
         },
         // 生成组件属性
         getComponentAttribute(item) {
-            // TODO: 删除__config__优化
             let clone = JSON.parse(JSON.stringify(item))
             if (clone.__config__) delete clone.__config__
             if (clone.__slot__) delete clone.__slot__
@@ -138,7 +136,11 @@ export default {
             if (val.currentTarget !== undefined) {
                 val = val.currentTarget.value
             }
-            this.activeComponent.defaultValue = val
+            if (this.activeComponent.defaultValue !== undefined) {
+                this.activeComponent.defaultValue = val
+            } else if (this.activeComponent.defaultChecked !== undefined) {
+                this.activeComponent.defaultChecked = val
+            }
         }
     },
 };

@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-25 16:31:59
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-02-26 17:35:37
+ * @LastEditTime: 2021-03-02 17:24:35
  * @Email: 19875991227@163.com
  * @Description: 执行表单动作
 -->
@@ -18,6 +18,8 @@
 
 <script>
 import { tags, templateBuilder, formBuilder } from '@/components/generator/html'
+import { scriptBuilder, jsBuilder } from '@/components/generator/js'
+import { formatHtml } from '@/utils/format'
 
 export default {
     name: 'ActionMenu',
@@ -25,8 +27,7 @@ export default {
         return {
             formData: {},
             tags,
-            templateBuilder,
-            htmlStr: ''
+            templateBuilder
         }
     },
     props: {
@@ -41,8 +42,10 @@ export default {
         // 导出 vue 界面
         exportVuePage() {
             this.setFormData()
-            let data = this.setHtmlCode()
-            return data
+            const html = this.setHtmlCode()
+            const script = this.setScriptCode()
+            console.log(formatHtml(html + script))
+            return html + script
             // let urlObject = window.URL || window.webkitURL || window
             // let exportBlob = new Blob([data])
             // let link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a')
@@ -57,16 +60,21 @@ export default {
                 ...this.formConfig
             }
         },
-        //
+        // 生成 html 代码
         setHtmlCode() {
-            let htmlStr = ''
+            let str = ''
             this.formData.componentList.forEach(item => {
-                htmlStr = htmlStr + `${tags[item.__config__.htmlTag](item)}\n`
+                str = str + `${tags[item.__config__.htmlTag](item)}\n`
             })
-            htmlStr = templateBuilder(formBuilder(this.formConfig, htmlStr))
-            console.log(htmlStr)
-            return htmlStr
+            str = formatHtml(templateBuilder(formBuilder(this.formConfig, str)))
+            return str
         },
+        // 生成 script 代码
+        setScriptCode() {
+            let str = ''
+            str = formatHtml(scriptBuilder(jsBuilder(this.formData, str)))
+            return str
+        }
     }
 }
 </script>

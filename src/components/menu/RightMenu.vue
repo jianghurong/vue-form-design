@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-24 14:14:24
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-02-26 17:14:45
+ * @LastEditTime: 2021-03-02 17:57:19
  * @Email: 19875991227@163.com
  * @Description: 右侧面板（组件属性与表单属性）
 -->
@@ -64,6 +64,15 @@
                 >
                     <a-input
                         v-model="activeComponent.defaultValue"
+                    ></a-input>
+                </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.defaultChecked !== undefined"
+                    label="默认值"
+                >
+                    <a-input
+                        v-model="activeComponent.defaultChecked"
+                        @change="defaultCheckedChange"
                     ></a-input>
                 </a-form-item>
 				<a-form-item
@@ -136,7 +145,6 @@
 						</a-col>
 					</a-row>
 				</template>
-                <!-- TODO 标记刻度 -->
 				<!-- select 模块 -->
 				<a-form-item
 					v-if="activeComponent.type !== undefined"
@@ -398,9 +406,14 @@ export default {
             this.iconVisiable = true
             this.currentIconType = type
         },
+        // 图标选择
         iconSelect(icon) {
             this.iconVisiable = false
             this.activeComponent.__slot__[this.currentIconType] = icon
+        },
+        // 开关默认值变化
+        defaultCheckedChange(e) {
+            this.activeComponent.defaultChecked = e.currentTarget.value
         }
     },
 };

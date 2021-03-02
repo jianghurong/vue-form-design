@@ -1,4 +1,3 @@
-<!-- TODO ICON 选择 -->
 <template>
 	<a-drawer width="50%" :visible="visable" @close="onClose">
 		<ul class="icon-list">

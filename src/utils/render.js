@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-25 10:10:06
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-02-26 16:08:30
+ * @LastEditTime: 2021-03-02 17:54:41
  * @Email: 19875991227@163.com
  * @Description: 动态表单设计器-生成器（负责将 JSON 数据渲染成 HTML）
  */
@@ -40,6 +40,8 @@ function nodeDataObjectBuilder(dataObject, config) {
         } else {
             if (key === 'defaultValue') {
                 nodeBindVModel.call(this, dataObject, config.defaultValue)
+            } else if (key === 'defaultChecked') {
+                nodeBindVModel.call(this, dataObject, config.defaultChecked)
             }
             dataObject.attrs[key] = val
         }
@@ -51,8 +53,13 @@ function nodeDataObjectBuilder(dataObject, config) {
 function nodeBindVModel(dataObject, val) {
     dataObject.props.value = val
     // 注意这里只能实现组件属性的单向绑定，我们需要实现双向绑定给组件添加 input 事件
+    // input 事件支持绝大部分组件
     dataObject.on.input = e => {
         // 注意组件的 input 事件回调类型可能是几种
+        this.$emit('input', e)
+    }
+    // change 事件支持下拉选择组件
+    dataObject.on.change = e => {
         this.$emit('input', e)
     }
 }

@@ -2,26 +2,24 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-26 09:45:28
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-02-26 17:39:47
+ * @LastEditTime: 2021-03-02 17:35:22
  * @Email: 19875991227@163.com
- * @Description: vue 表单生成代码
+ * @Description: vue 动态表单 html 代码生成
  */
 
 import { formConfig } from "./config"
 
 // 模板生成函数
 function templateBuilder(el) {
-    return `<template>
-       ${el}
-    </teamplate>`
+    return `<template>\n${el}\n</teamplate>`
 }
+
 // 表单生成函数
 function formBuilder(config, el) {
-    let htmlStr = `<a-form :label-col="{span: ${formConfig.labelCol.span}}" :wrapper-col="{span: ${formConfig.wrapperCol.span}}">
-        ${el}
-    </a-form>`
+    let htmlStr = `<a-form :label-col="{span: ${formConfig.labelCol.span}}" :wrapper-col="{span: ${formConfig.wrapperCol.span}}">\n${el}\n</a-form>`
     return htmlStr
 }
+
 // 属性解析函数
 function attributesBuilder(el) {
     return {
@@ -46,7 +44,9 @@ function attributesBuilder(el) {
         closable: el.closable ? `closable="${el.closable}"` : '',
         message: el.message ? `message="${el.message}"` : '',
         description: el.description ? `description="${el.description}"` : '',
-        type: el.type ? `type="${el.type}"` : ''
+        type: el.type ? `type="${el.type}"` : '',
+        checkedChildren: el.checkedChildren ? `checkedChildren="${el.checkedChildren}"` : '',
+        unCheckedChildren: el.unCheckedChildren ? `unCheckedChildren="${el.unCheckedChildren}"` : ''
     }
 }
 // 下拉框子组件解析
@@ -75,6 +75,10 @@ const tags = {
     'a-input-password': el => {
         const { tag, placeholder, disabled, allowClear } = attributesBuilder(el)
         return `<${tag} ${placeholder} ${disabled} ${allowClear} ></${tag}>`
+    },
+    'a-switch': el => {
+        const { tag, disabled, checkedChildren, unCheckedChildren } = attributesBuilder(el)
+        return `<${tag} ${disabled} ${checkedChildren} ${unCheckedChildren}></${tag}>`
     },
     'a-radio-group': el => {
         const { tag } = attributesBuilder(el)

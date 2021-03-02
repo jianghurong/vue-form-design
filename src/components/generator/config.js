@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-23 10:32:53
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-02-26 17:31:57
+ * @LastEditTime: 2021-03-02 17:39:55
  * @Email: 19875991227@163.com
  * @Description: 表单设计器配置
  */
@@ -127,7 +127,7 @@ export const selectComponents = [
             htmlTag: 'a-switch',
             icon: 'switcher'
         },
-        // 'v-model': false,
+        defaultChecked: true,
         disabled: false,
         checkedChildren: '',
         unCheckedChildren: ''
@@ -208,6 +208,7 @@ export const promptComponents = [
 
 // 表单属性
 export const formConfig = {
+    __vModel__: 'form',
     labelCol: { span: 4 },
     wrapperCol: { span: 8 },
     labelAlign: 'left',
