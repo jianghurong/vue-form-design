@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-24 14:14:24
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-02 17:57:19
+ * @LastEditTime: 2021-03-03 17:12:57
  * @Email: 19875991227@163.com
  * @Description: 右侧面板（组件属性与表单属性）
 -->
@@ -63,16 +63,19 @@
                     label="默认值"
                 >
                     <a-input
-                        v-model="activeComponent.defaultValue"
+                        :value="setDefaultValue(activeComponent.defaultValue)"
+                        @change="onDefaultValueChange"
+                        placeholder="请输入默认值"
                     ></a-input>
                 </a-form-item>
                 <a-form-item
-                    v-if="activeComponent.defaultChecked !== undefined"
+                    v-if="activeComponent.checked !== undefined"
                     label="默认值"
                 >
                     <a-input
-                        v-model="activeComponent.defaultChecked"
-                        @change="defaultCheckedChange"
+                        :value="setDefaultValue(activeComponent.checked)"
+                        @change="onDefaultValueChange"
+                        placeholder="请输入默认值"
                     ></a-input>
                 </a-form-item>
 				<a-form-item
@@ -430,9 +433,33 @@ export default {
             this.iconVisiable = false
             this.activeComponent.__slot__[this.currentIconType] = icon
         },
-        // 开关默认值变化
-        defaultCheckedChange(e) {
-            this.activeComponent.defaultChecked = e.currentTarget.value
+        // 默认值变化
+        onDefaultValueChange(e) {
+            let val = e.currentTarget.value
+            if (this.activeComponent.checked !== undefined) {
+                this.activeComponent.checked = val === 'true' ? true : false
+            }
+            if (this.activeComponent.defaultValue !== undefined) {
+                if (typeof this.activeComponent.defaultValue === 'number') {
+                    this.activeComponent.defaultValue = Number(val)
+                } else if (this.activeComponent.defaultValue instanceof Array) {
+                    this.activeComponent.defaultValue = val.split(',')
+                } else {
+                    this.activeComponent.defaultValue = val
+                }
+            }
+        },
+        // 新建默认值
+        setDefaultValue(val) {
+            if (typeof val === 'boolean') {
+                return `${val}`
+            } else if (val instanceof Array) {
+                return val.join(',')
+            } else if (typeof val === 'number') {
+                return `${val}`
+            }else {
+                return val
+            }
         }
     },
 };

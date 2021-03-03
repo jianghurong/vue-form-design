@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-25 10:10:06
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-02 17:54:41
+ * @LastEditTime: 2021-03-03 17:29:12
  * @Email: 19875991227@163.com
  * @Description: 动态表单设计器-生成器（负责将 JSON 数据渲染成 HTML）
  */
@@ -11,6 +11,8 @@
  * 阅读前请熟悉 jsx 语法
  * https://cn.vuejs.org/v2/guide/render-function.html
  */
+import { deepClone } from '@/utils/common'
+
 
 // 获取 VNode 的 property ,以便绑定 HTML 的 attribute
 function originDataObjectBuilder() {
@@ -40,8 +42,8 @@ function nodeDataObjectBuilder(dataObject, config) {
         } else {
             if (key === 'defaultValue') {
                 nodeBindVModel.call(this, dataObject, config.defaultValue)
-            } else if (key === 'defaultChecked') {
-                nodeBindVModel.call(this, dataObject, config.defaultChecked)
+            } else if (key === 'checked') {
+                nodeBindVModel.call(this, dataObject, config.checked)
             }
             dataObject.attrs[key] = val
         }
@@ -51,6 +53,7 @@ function nodeDataObjectBuilder(dataObject, config) {
 
 // 将 v-model 绑定到组件的 props
 function nodeBindVModel(dataObject, val) {
+    console.log(val)
     dataObject.props.value = val
     // 注意这里只能实现组件属性的单向绑定，我们需要实现双向绑定给组件添加 input 事件
     // input 事件支持绝大部分组件
@@ -126,7 +129,7 @@ export default {
     render(h) {
         const nodeDataObject = originDataObjectBuilder()
         const htmlTag = this.renderSlot.__config__.htmlTag
-        const nodeClone = JSON.parse(JSON.stringify(this.renderSlot))
+        const nodeClone = deepClone(this.renderSlot)
         const children = []
         nodeChildrenBuilder.call(this, h, nodeClone, children)
         nodeDataObjectBuilder.call(this, nodeDataObject, nodeClone)

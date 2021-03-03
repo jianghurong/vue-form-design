@@ -2,10 +2,12 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-23 10:32:53
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-02 17:39:55
+ * @LastEditTime: 2021-03-03 17:29:37
  * @Email: 19875991227@163.com
  * @Description: 表单设计器配置
  */
+import moment from 'moment'
+
 // 表单设计器组件分为输入型组件、选择型组件
 export const inputComponents = [
     {
@@ -117,7 +119,7 @@ export const selectComponents = [
                 { label: '选项三', value: '3' },
             ]
         },
-        defaultValue: [],
+        defaultValue: ['1', '2'],
         disabled: false,
     },
     {
@@ -125,9 +127,9 @@ export const selectComponents = [
             label: '开关',
             showLabel: true,
             htmlTag: 'a-switch',
-            icon: 'switcher'
+            icon: 'switcher',
         },
-        defaultChecked: true,
+        checked: false,
         disabled: false,
         checkedChildren: '',
         unCheckedChildren: ''
@@ -157,7 +159,8 @@ export const selectComponents = [
         allowClear: true,
         inputReadOnly: false,
         showToday: true,
-        defaultValue: ''
+        valueFormat: moment().format('YYYY-MM-DD'),
+        defaultValue: '2021-03-03'
     },
     {
         __config__: {
@@ -213,6 +216,6 @@ export const formConfig = {
     wrapperCol: { span: 8 },
     labelAlign: 'left',
     ref: '',
-    hideRequiredMark: false,
+    // hideRequiredMark: false,
     layout: 'horizontal'
 }

@@ -141,8 +141,8 @@ export default {
             }
             if (this.activeComponent.defaultValue !== undefined) {
                 this.activeComponent.defaultValue = val
-            } else if (this.activeComponent.defaultChecked !== undefined) {
-                this.activeComponent.defaultChecked = val
+            } else if (this.activeComponent.checked !== undefined) {
+                this.activeComponent.checked = val
             }
         }
     },
