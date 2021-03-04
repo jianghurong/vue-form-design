@@ -21,7 +21,8 @@ import {
   Checkbox,
   Slider,
   ConfigProvider,
-  Drawer
+  Drawer,
+  Empty
 } from 'ant-design-vue'
 
 Vue.use(Row)
@@ -43,6 +44,7 @@ Vue.use(Row)
   .use(Slider)
   .use(ConfigProvider)
   .use(Drawer)
+  .use(Empty)
 
 Vue.config.productionTip = false
 

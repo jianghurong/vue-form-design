@@ -35,9 +35,9 @@ function dataBuilder(config) {
 function optionBuilder(config) {
     let data = []
     config.componentList.forEach(component => {
-        if (component.__slot__ && component.__slot__.optionList) {
+        if (component.slot && component.slot.optionList) {
             let list = []
-            component.__slot__.optionList.forEach(option => {
+            component.slot.optionList.forEach(option => {
                 list.push(option)
             })
             data.push(`${component.__vModel__}OptionList: ${JSON.stringify(list)}`)

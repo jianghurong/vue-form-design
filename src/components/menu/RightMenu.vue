@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-24 14:14:24
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-03 17:12:57
+ * @LastEditTime: 2021-03-04 17:43:20
  * @Email: 19875991227@163.com
  * @Description: 右侧面板（组件属性与表单属性）
 -->
@@ -30,11 +30,11 @@
                     ></a-input>
                 </a-form-item>
                 <a-form-item
-                    v-if="activeComponent.__config__ && activeComponent.__config__.label !== undefined"
+                    v-if="activeComponent.self && activeComponent.self.label !== undefined"
                     label="标签名称"
                 >
                     <a-input
-                        v-model="activeComponent.__config__.label"
+                        v-model="activeComponent.self.label"
                     ></a-input>
                 </a-form-item>
                 <a-form-item
@@ -98,16 +98,16 @@
 				</a-form-item>
 				<!-- radio 模块 -->
 				<a-form-item
-					v-if="activeComponent.__config__ && activeComponent.__config__.type !== undefined"
+					v-if="activeComponent.self && activeComponent.self.type !== undefined"
 					label="按钮样式"
 				>
-					<a-radio-group v-model="activeComponent.__config__.type" button-style="solid">
+					<a-radio-group v-model="activeComponent.self.type" button-style="solid">
 						<a-radio-button value="">默认</a-radio-button>
 						<a-radio-button value="button">按钮</a-radio-button>
 					</a-radio-group>
 				</a-form-item>
 				<a-form-item
-					v-if="activeComponent.__config__ && activeComponent.__config__.type === 'button'"
+					v-if="activeComponent.self && activeComponent.self.type === 'button'"
 					label="描边填色"
 				>
 					<a-radio-group v-model="activeComponent.buttonStyle" button-style="solid">
@@ -125,13 +125,13 @@
                     </a-radio-group>
                 </a-form-item>
 				<!-- 选项模块 -->
-				<template v-if="activeComponent.__slot__ && activeComponent.__slot__.optionList !== undefined">
+				<template v-if="activeComponent.slot && activeComponent.slot.optionList !== undefined">
 					<a-row :gutter="[0, 24]">
 						<a-col :offset="2" :span="8">标签名</a-col>
 						<a-col :offset="4" :span="8">标签值</a-col>
 					</a-row>
 					<a-row
-						v-for="(option, index) in activeComponent.__slot__.optionList"
+						v-for="(option, index) in activeComponent.slot.optionList"
 						:key="index"
 						:gutter="[0, 24]"
 					>
@@ -206,11 +206,11 @@
                     ></a-input>
                 </a-form-item>
                 <a-form-item
-                    v-if="activeComponent.__slot__ && activeComponent.__slot__.prefix !== undefined"
+                    v-if="activeComponent.slot && activeComponent.slot.prefix !== undefined"
                     label="前缀图标"
                 >
                     <a-input-search
-                        v-model="activeComponent.__slot__.prefix"
+                        v-model="activeComponent.slot.prefix"
                         placeholder="请输入前缀图标"
                         @search="activeIconMenu('prefix')"
                     >
@@ -220,13 +220,27 @@
                     </a-input-search>
                 </a-form-item>
                 <a-form-item
-                    v-if="activeComponent.__slot__ && activeComponent.__slot__.suffix !== undefined"
+                    v-if="activeComponent.slot && activeComponent.slot.suffix !== undefined"
                     label="后缀图标"
                 >
                     <a-input-search
-                        v-model="activeComponent.__slot__.suffix"
+                        v-model="activeComponent.slot.suffix"
                         placeholder="请输入后缀图标"
                         @search="activeIconMenu('suffix')"
+                    >
+                        <a-button type="primary" slot="enterButton">
+                            <a-icon type="search"></a-icon>
+                        </a-button>
+                    </a-input-search>
+                </a-form-item>
+                <a-form-item
+                    v-if="activeComponent.slot && activeComponent.slot.suffixIcon !== undefined"
+                    label="后缀图标"
+                >
+                    <a-input-search
+                        v-model="activeComponent.slot.suffixIcon"
+                        placeholder="请输入后缀图标"
+                        @search="activeIconMenu('suffixIcon')"
                     >
                         <a-button type="primary" slot="enterButton">
                             <a-icon type="search"></a-icon>
@@ -259,22 +273,20 @@
                 </a-form-item>
                 <a-form-item
                     v-if="activeComponent.hourStep !== undefined"
-                    label="小时选项间隔"
+                    label="小时间隔"
                 >   
                     <a-input-number
                         v-model="activeComponent.hourStep"
                     ></a-input-number>
                 </a-form-item>
 
-
                 <!-- switch 模块 -->
                 <a-form-item
-                    v-if="activeComponent.__config__ && activeComponent.__config__.showLabel !== undefined"
+                    v-if="activeComponent.self && activeComponent.self.showLabel !== undefined"
                     label="标签显示"
                 >
                     <a-switch
-                        v-model="activeComponent.__config__.showLabel"
-                        placeholder="请输入开启提示"
+                        v-model="activeComponent.self.showLabel"
                     ></a-switch>
                 </a-form-item>
                 <a-form-item
@@ -392,6 +404,7 @@
 
 <script>
 import IconMenu from './IconMenu'
+import moment from 'moment'
 
 export default {
     name: 'RightMenu',
@@ -418,7 +431,7 @@ export default {
     methods: {
         // 添加组件
 		addComponentOption() {
-			this.activeComponent.__slot__.optionList.push({
+			this.activeComponent.slot.optionList.push({
 				label: '',
 				value: ''
 			})
@@ -431,23 +444,30 @@ export default {
         // 图标选择
         iconSelect(icon) {
             this.iconVisiable = false
-            this.activeComponent.__slot__[this.currentIconType] = icon
+            this.activeComponent.slot[this.currentIconType] = icon
         },
         // 默认值变化
         onDefaultValueChange(e) {
             let val = e.currentTarget.value
-            if (this.activeComponent.checked !== undefined) {
-                this.activeComponent.checked = val === 'true' ? true : false
-            }
             if (this.activeComponent.defaultValue !== undefined) {
                 if (typeof this.activeComponent.defaultValue === 'number') {
                     this.activeComponent.defaultValue = Number(val)
                 } else if (this.activeComponent.defaultValue instanceof Array) {
                     this.activeComponent.defaultValue = val.split(',')
+                } else if (this.activeComponent.self.htmlTag === 'a-date-picker') {
+                    if (val.length === 10) {
+                        this.activeComponent.defaultValue = moment(val, 'YYYY-MM-DD')
+                    }
+                } else if (this.activeComponent.self.htmlTag === 'a-time-picker') {
+                    if (val.length === 8) {
+                        this.activeComponent.defaultValue = moment(val, 'hh:mm:ss')
+                    }
                 } else {
                     this.activeComponent.defaultValue = val
                 }
-            }
+            } else if (typeof this.activeComponent.checked === 'boolean') {
+                this.activeComponent.checked = val === 'true' ? true : false
+            } 
         },
         // 新建默认值
         setDefaultValue(val) {
@@ -457,7 +477,13 @@ export default {
                 return val.join(',')
             } else if (typeof val === 'number') {
                 return `${val}`
-            }else {
+            } else if (val && val._isAMomentObject) {
+                if (this.activeComponent.self.htmlTag === 'a-date-picker') {
+                    return moment(val).format('YYYY-MM-DD')
+                } else if (this.activeComponent.self.htmlTag === 'a-time-picker') {
+                    return moment(val).format('hh:mm:ss')
+                }
+            } else {
                 return val
             }
         }

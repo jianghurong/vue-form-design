@@ -2,23 +2,23 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-23 10:32:53
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-03 17:29:37
+ * @LastEditTime: 2021-03-04 18:02:04
  * @Email: 19875991227@163.com
  * @Description: 表单设计器配置
  */
-import moment from 'moment'
+// import moment from 'moment'
 
 // 表单设计器组件分为输入型组件、选择型组件
 export const inputComponents = [
     {
         // 组件的配置
-        __config__: {
+        self: {
             label: '单行文本',
             showLabel: true,
             htmlTag: 'a-input',
             icon: 'edit',
         },
-        __slot__: {
+        slot: {
             prefix: '',
             suffix: ''
         },
@@ -33,7 +33,7 @@ export const inputComponents = [
         addonAfter: '', // 后置标签
     },
     {
-        __config__: {
+        self: {
             label: '多行文本',
             showLabel: true,
             htmlTag: 'a-textarea',
@@ -49,7 +49,7 @@ export const inputComponents = [
     },
     {
         // 组件的配置
-        __config__: {
+        self: {
             label: '密码框',
             showLabel: true,
             htmlTag: 'a-input-password',
@@ -69,106 +69,118 @@ export const inputComponents = [
 
 export const selectComponents = [
     {
-        __config__: {
+        self: {
             label: '下拉选择',
             showLabel: true,
             htmlTag: 'a-select',
             icon: 'select',
         },
-        __slot__: {
+        slot: {
             optionList: [
                 { label: '选项一', value: '1' },
                 { label: '选项二', value: '2' },
                 { label: '选项三', value: '3' },
             ]
         },
+        style: { width: '100%' }, // 行内样式
         defaultValue: '1', // 默认值
         disabled: false, // 禁用
         showArrow: true, // 是否展示小箭头 
     },
     {
-        __config__: {
+        self: {
             label: '单选框',
             showLabel: true,
             htmlTag: 'a-radio-group',
             icon: 'select',
             type: '',
         },
-        __slot__: {
+        slot: {
             optionList: [
                 { label: '选项一', value: '1' },
                 { label: '选项二', value: '2' },
                 { label: '选项三', value: '3' },
             ]
         },
+        style: { width: '100%' },
         defaultValue: '1',
         disabled: false,
         buttonStyle: 'solid'
     },
     {
-        __config__: {
+        self: {
             label: '多选框',
             showLabel: true,
             htmlTag: 'a-checkbox-group',
             icon: 'select'
         },
-        __slot__: {
+        slot: {
             optionList: [
                 { label: '选项一', value: '1' },
                 { label: '选项二', value: '2' },
                 { label: '选项三', value: '3' },
             ]
         },
+        style: { width: '100%' },
         defaultValue: ['1', '2'],
         disabled: false,
     },
     {
-        __config__: {
+        self: {
             label: '开关',
             showLabel: true,
             htmlTag: 'a-switch',
             icon: 'switcher',
         },
+        style: { width: '20px' },
         checked: false,
         disabled: false,
         checkedChildren: '',
         unCheckedChildren: ''
     },
     {
-        __config__: {
+        self: {
             label: '评分',
             showLabel: true,
             htmlTag: 'a-rate',
             icon: 'star'
         },
+        style: { width: '100%' },
         disabled: false,
         allowClear: false,
         count: 5,
-        defaultValue: 5,
+        defaultValue: 1,
         allowHalf: false
     },
     {
-        __config__: {
+        self: {
             label: '日期选择器',
             showLabel: true,
             htmlTag: 'a-date-picker',
             icon: 'calendar'
         },
+        slot: {
+            suffixIcon: ''
+        },
+        style: { width: '100%' },
         disabled: false,
         placeholder: '',
         allowClear: true,
         inputReadOnly: false,
         showToday: true,
-        valueFormat: moment().format('YYYY-MM-DD'),
-        defaultValue: '2021-03-03'
+        defaultValue: ''
     },
     {
-        __config__: {
+        self: {
             label: '时间选择器',
             showLabel: true,
             htmlTag: 'a-time-picker',
             icon: 'calendar'
         },
+        slot: {
+            suffixIcon: ''
+        },
+        style: { width: '100%' },
         disabled: false,
         placeholder: '',
         allowClear: true,
@@ -177,16 +189,17 @@ export const selectComponents = [
         inputReadOnly: false, // 设置输入框为只读，避免在移动设备上打开虚拟键盘
     },
     {
-        __config__: {
+        self: {
             label: '滑动输入条',
             showLabel: true,
             htmlTag: 'a-slider',
             icon: 'sliders'
         },
+        style: { width: '100%' },
         defaultValue: 60,
         max: 100,
         min: 0,
-        vertical: false, // 组件方向 false - 水平 true - 垂直
+        // vertical: false, // 组件方向 false - 水平 true - 垂直
         reverse: false, // 反向坐标轴
         tooltipVisible: false, // 显示提示
         disabled: false,
@@ -195,14 +208,15 @@ export const selectComponents = [
 
 export const promptComponents = [
     {
-        __config__: {
+        self: {
             label: '提示',
             showLabel: true,
             labelWidth: null,
             htmlTag: 'a-alert',
             icon: 'alert'
         },
-        closable: false,
+        // closable: false,
+        style: { width: '100%' },
         message: '提示信息',
         description: '',
         type: 'info'
@@ -217,5 +231,5 @@ export const formConfig = {
     labelAlign: 'left',
     ref: '',
     // hideRequiredMark: false,
-    layout: 'horizontal'
+    // layout: 'horizontal'
 }

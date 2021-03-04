@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-25 10:10:06
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-03 17:29:12
+ * @LastEditTime: 2021-03-04 15:42:54
  * @Email: 19875991227@163.com
  * @Description: 动态表单设计器-生成器（负责将 JSON 数据渲染成 HTML）
  */
@@ -12,7 +12,6 @@
  * https://cn.vuejs.org/v2/guide/render-function.html
  */
 import { deepClone } from '@/utils/common'
-
 
 // 获取 VNode 的 property ,以便绑定 HTML 的 attribute
 function originDataObjectBuilder() {
@@ -53,7 +52,6 @@ function nodeDataObjectBuilder(dataObject, config) {
 
 // 将 v-model 绑定到组件的 props
 function nodeBindVModel(dataObject, val) {
-    console.log(val)
     dataObject.props.value = val
     // 注意这里只能实现组件属性的单向绑定，我们需要实现双向绑定给组件添加 input 事件
     // input 事件支持绝大部分组件
@@ -61,7 +59,7 @@ function nodeBindVModel(dataObject, val) {
         // 注意组件的 input 事件回调类型可能是几种
         this.$emit('input', e)
     }
-    // change 事件支持下拉选择组件
+    // change 事件支持下拉选择组件、日期组件
     dataObject.on.change = e => {
         this.$emit('input', e)
     }
@@ -69,13 +67,13 @@ function nodeBindVModel(dataObject, val) {
 
 // 删除多余属性
 function deleteExtraAttribute(dataObject) {
-    delete dataObject.attrs.__config__
-    delete dataObject.attrs.__slot__
+    delete dataObject.attrs.self
+    delete dataObject.attrs.slot
 }
 
 // 子组件生成
 function nodeChildrenBuilder(h, nodeClone, children) {
-    const htmlTag = nodeClone.__config__.htmlTag
+    const htmlTag = nodeClone.self.htmlTag
     if (compoentChild[htmlTag]) {
         children.push(compoentChild[htmlTag](h, nodeClone))
     }
@@ -85,17 +83,17 @@ function nodeChildrenBuilder(h, nodeClone, children) {
 const compoentChild = {
     'a-input': (h, nodeClone) => {
         const nodeList = []
-        Object.keys(nodeClone.__slot__).forEach(key => {
-            if (nodeClone.__slot__[key] !== '') {
-                nodeList.push(<a-icon slot={key} type={nodeClone.__slot__[key]}></a-icon>)
+        Object.keys(nodeClone.slot).forEach(key => {
+            if (nodeClone.slot[key] !== '') {
+                nodeList.push(<a-icon slot={key} type={nodeClone.slot[key]}></a-icon>)
             }
         })
         return nodeList
     },
     'a-radio-group': (h, nodeClone) => {
         const nodeList = []
-        nodeClone.__slot__.optionList.forEach(option => {
-            if (nodeClone.__config__.type === 'button') {
+        nodeClone.slot.optionList.forEach(option => {
+            if (nodeClone.self.type === 'button') {
                 nodeList.push(<a-radio-button value={option.value} disabled={option.disabled} button-style={nodeClone.buttonStyle}>{option.label}</a-radio-button>)
             } else {
                 nodeList.push(<a-radio value={option.value} disabled={option.disabled}>{option.label}</a-radio>)
@@ -105,19 +103,22 @@ const compoentChild = {
     },
     'a-checkbox-group': (h, nodeClone) => {
         const nodeList = []
-        nodeClone.__slot__.optionList.forEach(option => {
+        nodeClone.slot.optionList.forEach(option => {
             nodeList.push(<a-checkbox value={option.value} disabled={option.disabled}>{option.label}</a-checkbox>)
         })
         return nodeList
     },
     'a-select': (h, nodeClone) => {
         const nodeList = []
-        nodeClone.__slot__.optionList.forEach(option => {
+        nodeClone.slot.optionList.forEach(option => {
             nodeList.push(<a-select-option value={option.value}>{option.label}</a-select-option>)
         })
         return nodeList
-    }
+    },
 }
+
+compoentChild['a-date-picker'] = compoentChild['a-input']
+compoentChild['a-time-picker'] = compoentChild['a-input']
 
 export default {
     props: {
@@ -128,7 +129,7 @@ export default {
     },
     render(h) {
         const nodeDataObject = originDataObjectBuilder()
-        const htmlTag = this.renderSlot.__config__.htmlTag
+        const htmlTag = this.renderSlot.self.htmlTag
         const nodeClone = deepClone(this.renderSlot)
         const children = []
         nodeChildrenBuilder.call(this, h, nodeClone, children)

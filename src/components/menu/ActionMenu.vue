@@ -2,22 +2,18 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-25 16:31:59
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-02 17:24:35
+ * @LastEditTime: 2021-03-04 16:52:30
  * @Email: 19875991227@163.com
  * @Description: 执行表单动作
 -->
 <template>
     <div class="action-menu">
-        <a-row>
-            <a-col :span="12">
-                <a-button type="primary" @click="exportVuePage">导出 vue 页面</a-button>
-            </a-col>
-        </a-row>
+        <a-button type="primary" icon="download" @click="exportVuePage">导出 vue 页面</a-button>
     </div> 
 </template>
 
 <script>
-import { tags, templateBuilder, formBuilder } from '@/components/generator/html'
+import { tags, templateBuilder, formBuilder, formItemBuilder } from '@/components/generator/html'
 import { scriptBuilder, jsBuilder } from '@/components/generator/js'
 import { formatHtml } from '@/utils/format'
 
@@ -64,7 +60,7 @@ export default {
         setHtmlCode() {
             let str = ''
             this.formData.componentList.forEach(item => {
-                str = str + `${tags[item.__config__.htmlTag](item)}\n`
+                str = str + formItemBuilder(item, `${tags[item.self.htmlTag](item)}\n`)
             })
             str = formatHtml(templateBuilder(formBuilder(this.formConfig, str)))
             return str
@@ -78,3 +74,10 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.action-menu {
+    border-top: 1px solid #e8e8e8;
+    padding: 12px 0;
+}
+</style>
