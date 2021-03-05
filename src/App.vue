@@ -111,7 +111,7 @@ export default {
             formConfig,
             drawingList: [],
             activeComponent: {},
-            baseField: 1000,
+            baseItemId: 100,
             leftComponents: [
                 { title: '输入型组件', list: inputComponents },
                 { title: '选择型组件', list: selectComponents },
@@ -130,8 +130,8 @@ export default {
         },
         // 生成字段ID
         createField(clone) {
-            ++this.baseField
-            clone.__vModel__ = `fieId${this.baseField}`
+            ++this.baseItemId
+            clone.__vModel__ = `item${this.baseItemId}`
             return clone
         },
         // 生成组件属性

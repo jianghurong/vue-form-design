@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-23 10:32:53
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-04 18:02:04
+ * @LastEditTime: 2021-03-05 11:01:17
  * @Email: 19875991227@163.com
  * @Description: 表单设计器配置
  */
@@ -93,7 +93,7 @@ export const selectComponents = [
             showLabel: true,
             htmlTag: 'a-radio-group',
             icon: 'select',
-            type: '',
+            type: ''
         },
         slot: {
             optionList: [

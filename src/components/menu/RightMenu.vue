@@ -2,7 +2,7 @@
  * @Author: Richard Chiang
  * @Date: 2021-02-24 14:14:24
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-04 17:43:20
+ * @LastEditTime: 2021-03-05 13:50:45
  * @Email: 19875991227@163.com
  * @Description: 右侧面板（组件属性与表单属性）
 -->

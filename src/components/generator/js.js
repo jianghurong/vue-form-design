@@ -2,11 +2,12 @@
  * @Author: Richard Chiang
  * @Date: 2021-03-02 15:56:53
  * @LastEditor: Richard Chiang
- * @LastEditTime: 2021-03-02 17:40:23
+ * @LastEditTime: 2021-03-05 15:18:57
  * @Email: 19875991227@163.com
  * @Description: vue 动态表单 js 代码生成
  */
 import { deepClone } from '@/utils/common'
+import moment from 'moment'
 
 // 脚本生成函数
 function scriptBuilder(el) {
@@ -26,7 +27,20 @@ function jsBuilder(config) {
 function dataBuilder(config) {
     let data = []
     config.componentList.forEach(component => {
-        data.push(`${component.__vModel__}: ${component.defaultValue}`)
+        let defaultValue = ''
+        // 处理不同组件的 defaultValue
+        if (component.self.htmlTag === 'a-date-picker') {
+            defaultValue = component.defaultValue !=='' ? `moment('${moment(component.defaultValue).format('YYYY-MM-DD')}', 'YYYY-MM-DD')` : null
+        } else if (component.self.htmlTag === 'a-time-picker') {
+            defaultValue = component.defaultValue !=='' ? `moment('${moment(component.defaultValue).format('hh:mm:ss')}', 'hh:mm:ss')` : null
+        } else if (component.self.htmlTag === 'a-switch') {
+            defaultValue = JSON.stringify(component.checked)
+        } else if (component.self.htmlTag === 'a-alert') {
+            defaultValue = JSON.stringify(component.message)
+        } else {
+            defaultValue =  JSON.stringify(component.defaultValue)
+        } 
+        data.push(`${component.__vModel__}: ${defaultValue}`)
     })
     return data
 }
@@ -48,7 +62,12 @@ function optionBuilder(config) {
 
 // script 生成
 function assembleBuilder(config, data, optionList) {
+    const momentShouldImport = config.componentList.some(component => {
+       return (component.self.htmlTag === 'a-date-picker' || component.self.htmlTag === 'a-time-picer') && component.defaultValue !== ''
+    })
+    const importList = momentShouldImport ? "import moment from 'moment'" : ''
     return `
+        ${importList}
         export default {
            data() {
                return {
@@ -57,12 +76,6 @@ function assembleBuilder(config, data, optionList) {
                     },
                     ${optionList}
                }
-           },
-           created() {
-
-           },
-           methods: {
-               
            }
         }
     `
